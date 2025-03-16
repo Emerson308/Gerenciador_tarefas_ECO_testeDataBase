@@ -1,0 +1,27 @@
+{
+  "name": "teste_sql",
+  "version": "1.0.0",
+  "description": "a",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Emerson308/App_habito_sustentabilidade.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Emerson308/App_habito_sustentabilidade/issues"
+  },
+  "homepage": "https://github.com/Emerson308/App_habito_sustentabilidade#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7"
+  }
+}
