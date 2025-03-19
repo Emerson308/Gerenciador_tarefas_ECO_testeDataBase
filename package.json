@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "a",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "data": "node showData.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/Emerson308/App_habito_sustentabilidade#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

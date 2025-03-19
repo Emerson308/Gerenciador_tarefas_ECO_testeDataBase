@@ -1,12 +1,24 @@
-require('dotenv').config();
-const sqlite3 = require('sqlite3').verbose();
+// require('dotenv').config();
+import { createClient } from '@supabase/supabase-js'
+import dotenv from 'dotenv'
+dotenv.config();
 
-const db = new sqlite3.Database(process.env.DATABASE_URL, (err) => {
-    if (err) {
-        console.log('Erro ao conectar com o banco de dados', err);
-    } else {
-        console.log('Banco de dados conectado');
-    }
-});
 
-module.exports = db;
+const supabaseUrl = 'https://uufxkxhgxrriyepnmdwo.supabase.co'
+const supabaseKey = process.env.DATABASE_URL
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+export default supabase;
+
+// const {data, error} = await supabase
+//     .from('usuarios')
+//     .select()
+
+// if (error){
+//     console.log(error)
+// }
+
+// console.log(data);
+
+
+// module.exports = supabase;

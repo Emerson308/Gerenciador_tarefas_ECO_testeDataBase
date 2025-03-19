@@ -1,9 +1,13 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const { randomUUID } = require('crypto');
-const pool = require('./db');
-// const open = require('open');
+import express from 'express';
+import path from 'path';
+import bodyParser from 'body-parser';
+import { randomUUID } from 'crypto';
+import supabase from './db.js';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = 3000;
@@ -25,14 +29,12 @@ app.post('/registro-cadastro', async (req, res) => {
     }
     try {
         const id = randomUUID();
-        const result = await pool.run('INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3)', [name, email, password], (err) => {
-            if (err) {
-                console.log('Erro ao inserir usuário', err.message);
-            } else {
-                res.status(201).json({ success: true, message: "Cadastro realizado!" });
-            }
-        });
-        return;
+        const { error } = await supabase
+            .from('usuarios')
+            .insert({nome: name, email: email, senha: 1234});
+        if (error){
+            console.log(error)
+        }
 
     } catch (error) {
         console.error(error);
