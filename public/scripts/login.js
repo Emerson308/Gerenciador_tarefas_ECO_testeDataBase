@@ -6,10 +6,12 @@ form.addEventListener('submit', async (e) => {
 
     const formData = new FormData(form);
     const dados = Object.fromEntries(formData.entries());
+    // console.log(dados);
     // console.log(dados)
 
     try {
-        const response = await fetch('/login', {
+        // console.log('Tentando conectar com o servidor')
+        const response = await fetch('/login-teste', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,6 +19,7 @@ form.addEventListener('submit', async (e) => {
             body: JSON.stringify(dados)
         });
 
+        // console.log('Tentando pegar resposta do servidor')
         const resultado = await response.json();
 
         if (resultado.success){

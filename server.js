@@ -3,8 +3,9 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import { randomUUID } from 'crypto';
 import supabase from './db.js';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+// import { console } from 'inspector';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,7 +14,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(join(__dirname, 'public')));
 app.use(express.json());
 
 // const DATA_PATH = path.join(__dirname, 'data', 'dados.json');
@@ -33,7 +34,13 @@ app.post('/registro-cadastro', async (req, res) => {
             .from('usuarios')
             .insert({nome: name, email: email, senha: 1234});
         if (error){
+            if (error.code === '23505'){
+                res.status(401).json({success: false, message: 'O email inserido já foi cadastrado'});
+                return;
+            }
             console.log(error)
+        } else {
+            res.status(700).json({success: true, message: 'Cadastro realizado!'});
         }
 
     } catch (error) {
@@ -42,16 +49,37 @@ app.post('/registro-cadastro', async (req, res) => {
     }
 })
 
-app.post('/login', (req, res) => {
+app.post('/login-teste', async (req, res) => {
+    const { email, password} = req.body;
+    try {
+        const { data, error } = await supabase
+            .from('usuarios')
+            .select('*')
+            .eq('email', email);
+        if (error){
+            console.log(error);
+        } else{
+            // console.log(data);
+            if (!data[0]){
+                res.status(402).json({success: false, message: "O email inserido não está cadastrado"});
+                return;
+            } else {
+                if (data[0].senha == password){
+                    res.status(701).json({success: true, message: "Login realizado!"});
+                    return;
+                } else {
+                    res.status(403).json({success: false, message: "A senha inserida está incorreta!"});
+                    return;
+                }
+            }
+        }
+    } catch (error){
+        console.error(error);
+        res.status(500).json({ success: false, message: "Erro ao salvar cadastro" });
+    }
 })
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
-}).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.log(`Porta ${PORT} já está em uso!`);
-        process.exit(1);
-    } else {
-        throw err;
-    }
-});
+    console.log(`Servidor rodando em  http://localhost:${PORT}`);
+})
